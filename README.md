@@ -1,2 +1,4 @@
 # netselect-go
-Selects the fastest mirror based on the lowest icmp latency written in Go
+![build](https://github.com/pgollangi/netselect-go/workflows/build/badge.svg?branch=master)
+
+A CLI tool to select the fastest mirror based on the lowest ICMP latency written in Go (golang)
