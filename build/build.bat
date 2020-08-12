@@ -1,0 +1,1 @@
+go build -o netselect.exe -ldflags ' -extldflags "-static"' main.go
