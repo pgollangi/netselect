@@ -2,10 +2,8 @@ package commands
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/MakeNowJust/heredoc"
-	"github.com/gookit/color"
 	"github.com/pgollangi/go-ping"
 	"github.com/spf13/cobra"
 )
@@ -33,8 +31,8 @@ var RootCmd = &cobra.Command{
 		pinger.Count = 10
 		pinger.SetPrivileged(true)
 		pinger.OnRecv = func(pkt *ping.Packet) {
-			fmt.Printf("%d bytes from %s: icmp_seq=%d time=%v\n",
-				pkt.Nbytes, pkt.IPAddr, pkt.Seq, pkt.Rtt)
+			fmt.Printf("%d bytes from %s: icmp_seq=%d time=%v ttl=%v \n",
+				pkt.Nbytes, pkt.IPAddr, pkt.Seq, pkt.Rtt, pkt.Ttl)
 		}
 		pinger.OnFinish = func(stats *ping.Statistics) {
 			fmt.Printf("\n--- %s ping statistics ---\n", stats.Addr)
@@ -49,19 +47,8 @@ var RootCmd = &cobra.Command{
 	},
 }
 
+// Start netselect command execution
 func Execute() error {
 	RootCmd.Flags().BoolP("version", "v", false, "show netselect version information")
 	return RootCmd.Execute()
-}
-
-func init() {
-}
-
-func er(msg interface{}) {
-	color.Error.Println("Error:", msg)
-	os.Exit(1)
-}
-func cmdErr(cmd *cobra.Command, args []string) {
-	color.Error.Println("Error: Unknown command:")
-	cmd.Usage()
 }
