@@ -1,6 +1,6 @@
 ![build](https://github.com/pgollangi/netselect-go/workflows/build/badge.svg?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/pgollangi/netselect-go)](https://goreportcard.com/report/github.com/pgollangi/netselect-go)
-![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+![License: MIT](https://img.shields.io/github/license/pgollangi/netselect-go)
 
 # netselect-go
 
@@ -19,4 +19,4 @@ Download a binary suitable for your OS at the [releases page](https://github.com
 
 ## License
 
-[MIT](https://github.com/pgollangi/netselect-go/blob/main/LICENSE)
+netselect-go is under MIT License. See the [LICENSE](https://github.com/pgollangi/netselect-go/blob/main/LICENSE) file for details.
