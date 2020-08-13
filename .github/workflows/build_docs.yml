@@ -14,6 +14,6 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add docs
-          git commit -m "docs update: latest"
+          git commit -m "docs update: latest" || echo "No document updates"
           git push
           cp ./docs/netselect.md ./docs/index.md
