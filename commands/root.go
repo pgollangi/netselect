@@ -47,7 +47,7 @@ var RootCmd = &cobra.Command{
 	},
 }
 
-// Start netselect command execution
+// Execute performs netselect command execution
 func Execute() error {
 	RootCmd.Flags().BoolP("version", "v", false, "show netselect version information")
 	return RootCmd.Execute()

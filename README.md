@@ -1,4 +1,5 @@
 ![build](https://github.com/pgollangi/netselect-go/workflows/build/badge.svg?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/pgollangi/netselect-go)](https://goreportcard.com/report/github.com/pgollangi/netselect-go)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
 # netselect-go
