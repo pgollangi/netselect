@@ -1,10 +1,14 @@
+# WARNING!!
+
+This tool is under development. Not yet ready for production use.
+
 ![build](https://github.com/pgollangi/netselect-go/workflows/build/badge.svg?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/pgollangi/netselect-go)](https://goreportcard.com/report/github.com/pgollangi/netselect-go)
 ![License: MIT](https://img.shields.io/github/license/pgollangi/netselect-go)
 
 # netselect
 
-A CLI tool to select the fastest mirror based on the lowest ICMP latency written in Go (golang), inspired by [apenwarr/netselect](https://github.com/apenwarr/netselect) debian package.
+A CLI tool as well as library to select the fastest mirror based on the lowest ICMP latency written in Go (golang), inspired by [apenwarr/netselect](https://github.com/apenwarr/netselect) debian package.
 
 ## Usage
 
