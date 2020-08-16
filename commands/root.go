@@ -2,11 +2,20 @@ package commands
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/MakeNowJust/heredoc"
-	"github.com/pgollangi/go-ping"
 	"github.com/spf13/cobra"
+
+	"netselect"
+	"text/tabwriter"
 )
+
+// Version is the version for netselect
+var Version string
+
+// Build holds the date bin was released
+var Build string
 
 // RootCmd is the main root/parent command
 var RootCmd = &cobra.Command{
@@ -16,39 +25,59 @@ var RootCmd = &cobra.Command{
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	Example: heredoc.Doc(`
-	$ netselect -s 
+	$ netselect m1.example.com m2.example.com m3.example.com
 	$ netselect -v
 	`),
 	Run: func(cmd *cobra.Command, args []string) {
-		// if ok, _ := cmd.Flags().GetBool("version"); ok {
-		// 	// versionCmd.Run(cmd, args)
-		// 	return
-		// }
-		pinger, err := ping.NewPinger(args[0])
+		if ok, _ := cmd.Flags().GetBool("version"); ok {
+			executeVersionCmd()
+			return
+		} else if len(args) == 0 {
+			cmd.Usage()
+			return
+		}
+
+		var mirrors = args
+		selector, err := netselect.NewSelector(mirrors[:])
 		if err != nil {
-			panic(err)
+			fmt.Println("Error ", err)
 		}
-		pinger.Count = 10
-		pinger.SetPrivileged(true)
-		pinger.OnRecv = func(pkt *ping.Packet) {
-			fmt.Printf("%d bytes from %s: icmp_seq=%d time=%v ttl=%v \n",
-				pkt.Nbytes, pkt.IPAddr, pkt.Seq, pkt.Rtt, pkt.Ttl)
+		result := selector.Select()
+
+		// initialize tabwriter
+		w := new(tabwriter.Writer)
+
+		// minwidth, tabwidth, padding, padchar, flags
+		w.Init(os.Stdout, 8, 8, 0, '\t', 0)
+
+		defer w.Flush()
+
+		for _, r := range result {
+			var successPercent int64
+			var avgRtt int64
+			var successPackets string
+			fmt.Println(r.Success, r.Error)
+			if r.Success {
+				successPercent = (int64)(100 - r.PacketLoss)
+				avgRtt = r.AvgRtt.Milliseconds()
+			}
+			successPackets = fmt.Sprintf("(%2d/%2d)", r.PacketsRecv, r.PacketsSent)
+
+			fmt.Fprintf(w, "%s \t %d ms\t%d%% ok\t%s\t\n", r.Mirror, avgRtt, successPercent, successPackets)
 		}
-		pinger.OnFinish = func(stats *ping.Statistics) {
-			fmt.Printf("\n--- %s ping statistics ---\n", stats.Addr)
-			fmt.Printf("%d packets transmitted, %d packets received, %v%% packet loss\n",
-				stats.PacketsSent, stats.PacketsRecv, stats.PacketLoss)
-			fmt.Printf("round-trip min/avg/max/stddev = %v/%v/%v/%v\n",
-				stats.MinRtt, stats.AvgRtt, stats.MaxRtt, stats.StdDevRtt)
-		}
-		pinger.Run()                 // blocks until finished
-		stats := pinger.Statistics() // get send/receive/rtt stats
-		fmt.Println(stats)
+
 	},
 }
 
 // Execute performs netselect command execution
 func Execute() error {
 	RootCmd.Flags().BoolP("version", "v", false, "show netselect version information")
+	RootCmd.Flags().BoolP("debug", "d", false, "show debug information")
+	RootCmd.Flags().IntP("top", "t", 3, "show top ranked <n> results")
 	return RootCmd.Execute()
+}
+
+func executeVersionCmd() {
+	fmt.Printf("netselect version %s (%s)\n", Version, Build)
+	fmt.Println("More info: pgollangi.com/netselect")
 }

@@ -2,9 +2,9 @@
 
 This tool is under development. Not yet ready for production use.
 
-![build](https://github.com/pgollangi/netselect-go/workflows/build/badge.svg?branch=master)
-[![Go Report Card](https://goreportcard.com/badge/github.com/pgollangi/netselect-go)](https://goreportcard.com/report/github.com/pgollangi/netselect-go)
-![License: MIT](https://img.shields.io/github/license/pgollangi/netselect-go)
+![build](https://github.com/pgollangi/netselect/workflows/build/badge.svg?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/pgollangi/netselect)](https://goreportcard.com/report/github.com/pgollangi/netselect)
+![License: MIT](https://img.shields.io/github/license/pgollangi/netselect)
 
 # netselect
 
@@ -13,7 +13,7 @@ A CLI tool as well as library to select the fastest mirror based on the lowest I
 ## Usage
 
 ```sh
-netselect [flags] <mirror(s)>
+netselect [options] <mirror(s)>
 ```
 ### Examples
 ```sh
@@ -61,4 +61,4 @@ Run `bin/netselect -v` to check if it worked.
 
 ## License
 
-`netselect` is under MIT License. See the [LICENSE](https://github.com/pgollangi/netselect-go/blob/main/LICENSE) file for details.
+`netselect` is under MIT License. See the [LICENSE](https://github.com/pgollangi/netselect/blob/master/LICENSE) file for details.
