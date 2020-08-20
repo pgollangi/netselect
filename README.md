@@ -29,6 +29,7 @@ m1.example.com      294 ms         100% ok         ( 3/ 3)
 
 Read the  [documentation](https://pgollangi.com/netselect)  for more information on the CLI tool.
 
+<!---
 ## Installation 
 
 Download a binary suitable for your OS at the [releases page](https://github.com/pgollangi/netselect/releases/latest).
@@ -37,7 +38,7 @@ Download a binary suitable for your OS at the [releases page](https://github.com
 ```sh
 npm install netselect
 ```
-
+--->
 
 ## Building from source
 
