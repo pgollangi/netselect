@@ -71,10 +71,14 @@ var RootCmd = &cobra.Command{
 
 // Execute performs netselect command execution
 func Execute() error {
+	return RootCmd.Execute()
+}
+
+func init() {
 	RootCmd.Flags().BoolP("version", "v", false, "show netselect version information")
 	RootCmd.Flags().BoolP("debug", "d", false, "show debug information")
-	RootCmd.Flags().IntP("top", "t", 3, "show top ranked <n> results")
-	return RootCmd.Execute()
+	RootCmd.Flags().IntP("threads", "t", 1, "use <n> parellel threads")
+	RootCmd.Flags().IntP("output", "o", 3, "output top ranked <n> results")
 }
 
 func executeVersionCmd() {
