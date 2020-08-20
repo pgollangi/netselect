@@ -59,6 +59,14 @@ build/build.bat
 Once completed, you will find the netselect CLI executable at `bin` directory. 
 Run `bin/netselect -v` to check if it worked.
 
-## License
+## Contributions
+Thanks for considering contributing to this project!
 
-`netselect` is under MIT License. See the [LICENSE](https://github.com/pgollangi/netselect/blob/master/LICENSE) file for details.
+Please read the [contributions guide](.github/CONTRIBUTING.md) and [Code of conduct](.github/CODE_OF_CONDUCT.md). 
+
+Feel free to open an issue or submit a pull request!
+
+## License
+Copyright © [Prasanna Kumar](https://pgollangi.com)
+
+`netselect` is open-sourced software licensed under the [MIT](LICENSE) license.
