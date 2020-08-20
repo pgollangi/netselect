@@ -62,7 +62,7 @@ Run `bin/netselect -v` to check if it worked.
 ## Contributions
 Thanks for considering contributing to this project!
 
-Please read the [contributions guide](.github/CONTRIBUTING.md) and [Code of conduct](.github/CODE_OF_CONDUCT.md). 
+Please read the [Contributions](.github/CONTRIBUTING.md) and [Code of conduct](.github/CODE_OF_CONDUCT.md). 
 
 Feel free to open an issue or submit a pull request!
 
