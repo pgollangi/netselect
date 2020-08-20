@@ -3,17 +3,19 @@ package netselect
 import (
 	"fmt"
 	"net"
+	"runtime"
+	"sort"
 	"time"
 
 	"github.com/pgollangi/go-ping"
 )
 
 type Selector struct {
-	Mirrors []string
-	Debug   bool
-}
-
-type Stats struct {
+	Mirrors    []string
+	Debug      bool
+	Attempts   int
+	Timeout    time.Duration
+	Privileged bool
 }
 
 type MirrorStats struct {
@@ -54,13 +56,20 @@ type MirrorStats struct {
 	StdDevRtt time.Duration
 }
 
+func isWindows() bool {
+	return runtime.GOOS == "windows"
+}
+
 func NewSelector(mirrors []string) (*Selector, error) {
 	return &Selector{
-		Mirrors: mirrors,
+		Mirrors:    mirrors,
+		Attempts:   3,
+		Timeout:    time.Second * 30,
+		Privileged: isWindows(),
 	}, nil
 }
 
-func DoPing(mirror string, s *Selector) *MirrorStats {
+func executePing(mirror string, s *Selector) *MirrorStats {
 	pinger, err := ping.NewPinger(mirror)
 	if err != nil {
 		return &MirrorStats{
@@ -69,10 +78,10 @@ func DoPing(mirror string, s *Selector) *MirrorStats {
 			Error:   err,
 		}
 	}
-	pinger.Timeout = time.Second * 30
-	pinger.Count = 3
+	pinger.Timeout = s.Timeout
+	pinger.Count = s.Attempts
 	pinger.Debug = s.Debug
-	pinger.SetPrivileged(true)
+	pinger.SetPrivileged(s.Privileged)
 	if s.Debug {
 		pinger.OnRecv = func(pkt *ping.Packet) {
 			fmt.Printf("%d bytes from %s: icmp_seq=%d time=%v ttl=%v \n",
@@ -111,54 +120,15 @@ func (r AllResults) Len() int           { return len(r) }
 func (r AllResults) Less(i, j int) bool { return r[i].AvgRtt < r[j].AvgRtt }
 func (r AllResults) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
 
-func worker(id int, jobs <-chan string, results chan<- *MirrorStats) {
-	for j := range jobs {
-		fmt.Println("worker", id, "started  job", j)
-		stats := DoPing(j, nil)
-		fmt.Println("worker", id, "finished job", j)
-		results <- stats
-	}
-}
-
 func (s *Selector) Select() []*MirrorStats {
+
 	pingResults := []*MirrorStats{}
 
 	for _, mirror := range s.Mirrors {
-		r := DoPing(mirror, s)
+		r := executePing(mirror, s)
 		pingResults = append(pingResults, r)
 	}
 
-	// // numJobs := len(s.mirrors)
-	// jobs := make(chan string)
-	// results := make(chan *MirrorStats)
-
-	// for w := 1; w <= 2; w++ {
-	// 	go worker(w, jobs, results)
-	// }
-
-	// for _, mirror := range s.mirrors {
-	// 	jobs <- mirror
-	// }
-
-	// close(jobs)
-
-	// // for {
-	// // 	r, ok := <-results
-	// // 	fmt.Print(ok)
-	// // 	pingResults = append(pingResults, r)
-	// // 	if ok != true {
-	// // 		break
-	// // 	}
-	// // }
-	// fmt.Print("JOBS DONE")
-	// for _, mirror := range s.mirrors {
-	// 	fmt.Print(mirror)
-	// 	pingResults = append(pingResults, <-results)
-	// }
-
-	// for r := range results {
-	// 	pingResults = append(pingResults, r)
-	// }
-	// sort.Sort(AllResults(pingResults))
+	sort.Sort(AllResults(pingResults))
 	return pingResults
 }
