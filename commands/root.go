@@ -37,23 +37,27 @@ var RootCmd = &cobra.Command{
 			return nil
 		}
 
+		debug, _ := cmd.Flags().GetBool("debug")
+		output, _ := cmd.Flags().GetInt("output")
+
 		var mirrors = args
 		selector, err := netselect.NewSelector(mirrors[:])
 		if err != nil {
 			fmt.Println("Error ", err)
 			return err
 		}
+		selector.Debug = debug
+
 		result := selector.Select()
 
 		// initialize tabwriter
 		w := new(tabwriter.Writer)
-
 		// minwidth, tabwidth, padding, padchar, flags
 		w.Init(os.Stdout, 8, 8, 2, '\t', 0)
-
 		defer w.Flush()
 
-		for _, r := range result {
+		for i := 0; i < output; i++ {
+			r := result[i]
 			var (
 				successPercent, avgRtt int64
 				successPackets         string
