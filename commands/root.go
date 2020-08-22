@@ -28,50 +28,57 @@ var RootCmd = &cobra.Command{
 	$ netselect m1.example.com m2.example.com m3.example.com
 	$ netselect -v
 	`),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		if ok, _ := cmd.Flags().GetBool("version"); ok {
-			executeVersionCmd()
-			return nil
-		} else if len(args) == 0 {
-			cmd.Usage()
-			return nil
-		}
+	RunE: runCommand,
+}
 
-		debug, _ := cmd.Flags().GetBool("debug")
-		output, _ := cmd.Flags().GetInt("output")
-
-		var mirrors = args
-		selector, err := netselect.NewSelector(mirrors[:])
-		if err != nil {
-			fmt.Println("Error ", err)
-			return err
-		}
-		selector.Debug = debug
-
-		result := selector.Select()
-
-		// initialize tabwriter
-		w := new(tabwriter.Writer)
-		// minwidth, tabwidth, padding, padchar, flags
-		w.Init(os.Stdout, 8, 8, 2, '\t', 0)
-		defer w.Flush()
-
-		for i := 0; i < output; i++ {
-			r := result[i]
-			var (
-				successPercent, avgRtt int64
-				successPackets         string
-			)
-			if r.Success {
-				successPercent = (int64)(100 - r.PacketLoss)
-				avgRtt = r.AvgRtt.Milliseconds()
-			}
-			successPackets = fmt.Sprintf("(%2d/%2d)", r.PacketsRecv, r.PacketsSent)
-
-			fmt.Fprintf(w, "%s \t %d ms\t%d%% ok\t%s\t\n", r.Mirror, avgRtt, successPercent, successPackets)
-		}
+func runCommand(cmd *cobra.Command, args []string) error {
+	if ok, _ := cmd.Flags().GetBool("version"); ok {
+		executeVersionCmd()
 		return nil
-	},
+	} else if len(args) == 0 {
+		cmd.Usage()
+		return nil
+	}
+
+	debug, _ := cmd.Flags().GetBool("debug")
+	output, _ := cmd.Flags().GetInt("output")
+	threads, _ := cmd.Flags().GetInt("threads")
+
+	var mirrors = args
+	selector, err := netselect.NewSelector(mirrors[:])
+	if err != nil {
+		fmt.Println("Error ", err)
+		return err
+	}
+	selector.Debug = debug
+	selector.Threads = threads
+
+	result := selector.Select()
+
+	// initialize tabwriter
+	w := new(tabwriter.Writer)
+	// minwidth, tabwidth, padding, padchar, flags
+	w.Init(os.Stdout, 8, 8, 2, '\t', 0)
+	defer w.Flush()
+
+	for i := 0; i < output; i++ {
+		if i >= len(mirrors) {
+			break
+		}
+		r := result[i]
+		var (
+			successPercent, avgRtt int64
+			successPackets         string
+		)
+		if r.Success {
+			successPercent = (int64)(100 - r.PacketLoss)
+			avgRtt = r.AvgRtt.Milliseconds()
+		}
+		successPackets = fmt.Sprintf("(%2d/%2d)", r.PacketsRecv, r.PacketsSent)
+
+		fmt.Fprintf(w, "%s \t %d ms\t%d%% ok\t%s\t\n", r.Mirror, avgRtt, successPercent, successPackets)
+	}
+	return nil
 }
 
 // Execute performs netselect command execution
@@ -82,7 +89,7 @@ func Execute() error {
 func init() {
 	RootCmd.Flags().BoolP("version", "v", false, "show netselect version information")
 	RootCmd.Flags().BoolP("debug", "d", false, "show debug information")
-	// RootCmd.Flags().IntP("threads", "t", 1, "use <n> parellel threads")
+	RootCmd.Flags().IntP("threads", "t", 1, "use <n> parellel threads")
 	RootCmd.Flags().IntP("output", "o", 3, "output top ranked <n> results")
 }
 

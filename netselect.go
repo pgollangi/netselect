@@ -16,6 +16,7 @@ type Selector struct {
 	Attempts   int
 	Timeout    time.Duration
 	Privileged bool
+	Threads    int
 }
 
 type MirrorStats struct {
@@ -120,15 +121,42 @@ func (r AllResults) Len() int           { return len(r) }
 func (r AllResults) Less(i, j int) bool { return r[i].AvgRtt < r[j].AvgRtt }
 func (r AllResults) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
 
+// Select tet
 func (s *Selector) Select() []*MirrorStats {
+
+	mirrors := s.Mirrors
+
+	jobs := make(chan string, len(mirrors))
+	results := make(chan *MirrorStats, len(mirrors))
 
 	pingResults := []*MirrorStats{}
 
-	for _, mirror := range s.Mirrors {
-		r := executePing(mirror, s)
-		pingResults = append(pingResults, r)
+	for t := 0; t < s.Threads; t++ {
+		go func() {
+			for mirror := range jobs {
+				r := executePing(mirror, s)
+				results <- r
+			}
+		}()
+	}
+	for _, mirror := range mirrors {
+		jobs <- mirror
+	}
+	close(jobs)
+
+	for range mirrors {
+		result := <-results
+		pingResults = append(pingResults, result)
 	}
 
 	sort.Sort(AllResults(pingResults))
 	return pingResults
+}
+
+func worker(s *Selector, jobs <-chan string, results chan<- *MirrorStats) {
+	for mirror := range jobs {
+		fmt.Println("worker", mirror, "processing job", mirror)
+		r := executePing(mirror, s)
+		results <- r
+	}
 }
