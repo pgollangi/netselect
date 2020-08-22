@@ -17,15 +17,20 @@ netselect [options] <mirror(s)>
 ```
 ### Examples
 ```sh
-netselect google.com twitter.com
-netselect -v
-netselect -h
+netselect m1.example.com m2.example.com m3.example.com
+```
+Output:
+```
+m2.example.com       56 ms         100% ok         ( 3/ 3)
+m3.example.com      136 ms         100% ok         ( 3/ 3)
+m1.example.com      294 ms         100% ok         ( 3/ 3)
 ```
 ## Learn More
 
 Read the  [documentation](https://pgollangi.com/netselect)  for more information on the CLI tool.
 
-## Installation
+<!---
+## Installation 
 
 Download a binary suitable for your OS at the [releases page](https://github.com/pgollangi/netselect/releases/latest).
 
@@ -33,6 +38,7 @@ Download a binary suitable for your OS at the [releases page](https://github.com
 ```sh
 npm install netselect
 ```
+--->
 
 ## Building from source
 
