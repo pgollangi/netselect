@@ -125,9 +125,10 @@ func (r AllResults) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
 func (s *Selector) Select() []*MirrorStats {
 
 	mirrors := s.Mirrors
+	mLen := len(mirrors)
 
-	jobs := make(chan string, len(mirrors))
-	results := make(chan *MirrorStats, len(mirrors))
+	jobs := make(chan string, mLen)
+	results := make(chan *MirrorStats, mLen)
 
 	pingResults := []*MirrorStats{}
 
@@ -144,12 +145,21 @@ func (s *Selector) Select() []*MirrorStats {
 	}
 	close(jobs)
 
+	success := []*MirrorStats{}
+	failed := []*MirrorStats{}
+
 	for range mirrors {
 		result := <-results
+		if result.Success {
+			success = append(success, result)
+		} else {
+			failed = append(failed, result)
+		}
 		pingResults = append(pingResults, result)
 	}
 
-	sort.Sort(AllResults(pingResults))
+	sort.Sort(AllResults(success))
+	pingResults = append(success, failed...)
 	return pingResults
 }
 
