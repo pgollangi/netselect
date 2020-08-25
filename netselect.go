@@ -83,8 +83,7 @@ func validateHost(host *Host) error {
 		if u.Scheme == "" || u.Host == "" {
 			return fmt.Errorf("invalid host address %s", host.Address)
 		}
-		fmt.Println(u.Host)
-		host.Address = u.Host
+		host.Address = u.Hostname()
 	}
 
 	return nil
