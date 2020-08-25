@@ -1,4 +1,4 @@
-module netselect
+module github.com/pgollangi/netselect
 
 go 1.14
 

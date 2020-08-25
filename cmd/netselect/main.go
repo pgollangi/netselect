@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"netselect/commands"
+	"github.com/pgollangi/netselect/commands"
 )
 
 // Version is set at build

@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"netselect/commands"
+	"github.com/pgollangi/netselect/commands"
 
 	"github.com/spf13/cobra/doc"
 )

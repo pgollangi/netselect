@@ -7,8 +7,9 @@ import (
 	"github.com/MakeNowJust/heredoc"
 	"github.com/spf13/cobra"
 
-	"netselect"
 	"text/tabwriter"
+
+	"github.com/pgollangi/netselect"
 )
 
 // Version is the version for netselect
@@ -25,9 +26,9 @@ var RootCmd = &cobra.Command{
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	Example: heredoc.Doc(`
-	$ netselect m1.example.com m2.example.com m3.example.com
-	$ netselect -v
-	`),
+		$ netselect m1.example.com m2.example.com m3.example.com
+		$ netselect -v
+		`),
 	RunE: runCommand,
 }
 
