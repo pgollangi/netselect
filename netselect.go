@@ -12,7 +12,7 @@ import (
 
 // NetSelector represents the instance of a NetSelector
 type NetSelector struct {
-	Mirrors    []string
+	Hosts      []*Host
 	Debug      bool
 	Attempts   int
 	Timeout    time.Duration
@@ -20,9 +20,17 @@ type NetSelector struct {
 	Threads    int
 }
 
-// MirrorStats represents the results of one particular mirror
-type MirrorStats struct {
-	Mirror string
+// Host represents a input address to NetSelector
+type Host struct {
+	// Unique ID
+	ID string
+	// Address of the Host. If URL provided, Host name will be extracted.
+	Address string
+}
+
+// HostStats represents the results of one particular host
+type HostStats struct {
+	Host *Host
 
 	Success bool
 
@@ -63,21 +71,30 @@ func isWindows() bool {
 	return runtime.GOOS == "windows"
 }
 
+// NewHost creates and returns new Host instance
+func NewHost(id string, address string) (*Host, error) {
+	// TODO validate address
+	return &Host{
+		ID:      id,
+		Address: address,
+	}, nil
+}
+
 // NewNetSelector instantiate new instance of NetSelector
-func NewNetSelector(mirrors []string) (*NetSelector, error) {
+func NewNetSelector(hosts []*Host) (*NetSelector, error) {
 	return &NetSelector{
-		Mirrors:    mirrors,
+		Hosts:      hosts,
 		Attempts:   3,
 		Timeout:    time.Second * 30,
 		Privileged: isWindows(),
 	}, nil
 }
 
-func executePing(mirror string, s *NetSelector) *MirrorStats {
-	pinger, err := ping.NewPinger(mirror)
+func executePing(host *Host, s *NetSelector) *HostStats {
+	pinger, err := ping.NewPinger(host.Address)
 	if err != nil {
-		return &MirrorStats{
-			Mirror:  mirror,
+		return &HostStats{
+			Host:    host,
 			Success: false,
 			Error:   err,
 		}
@@ -102,8 +119,8 @@ func executePing(mirror string, s *NetSelector) *MirrorStats {
 	pinger.Run()                 // blocks until finished
 	stats := pinger.Statistics() // get send/receive/rtt stats
 
-	return &MirrorStats{
-		Mirror:      mirror,
+	return &HostStats{
+		Host:        host,
 		Success:     true,
 		PacketsRecv: stats.PacketsRecv,
 		PacketsSent: stats.PacketsSent,
@@ -118,40 +135,40 @@ func executePing(mirror string, s *NetSelector) *MirrorStats {
 	}
 }
 
-type allResults []*MirrorStats
+type allResults []*HostStats
 
 func (r allResults) Len() int           { return len(r) }
 func (r allResults) Less(i, j int) bool { return r[i].AvgRtt < r[j].AvgRtt }
 func (r allResults) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
 
 // Select tet
-func (s *NetSelector) Select() []*MirrorStats {
+func (s *NetSelector) Select() []*HostStats {
 
-	mirrors := s.Mirrors
-	mLen := len(mirrors)
+	hosts := s.Hosts
+	mLen := len(hosts)
 
-	jobs := make(chan string, mLen)
-	results := make(chan *MirrorStats, mLen)
+	jobs := make(chan *Host, mLen)
+	results := make(chan *HostStats, mLen)
 
-	pingResults := []*MirrorStats{}
+	pingResults := []*HostStats{}
 
 	for t := 0; t < s.Threads; t++ {
 		go func() {
-			for mirror := range jobs {
-				r := executePing(mirror, s)
+			for host := range jobs {
+				r := executePing(host, s)
 				results <- r
 			}
 		}()
 	}
-	for _, mirror := range mirrors {
-		jobs <- mirror
+	for _, host := range hosts {
+		jobs <- host
 	}
 	close(jobs)
 
-	success := []*MirrorStats{}
-	failed := []*MirrorStats{}
+	success := []*HostStats{}
+	failed := []*HostStats{}
 
-	for range mirrors {
+	for range hosts {
 		result := <-results
 		if result.Success {
 			success = append(success, result)
@@ -166,10 +183,9 @@ func (s *NetSelector) Select() []*MirrorStats {
 	return pingResults
 }
 
-func worker(s *NetSelector, jobs <-chan string, results chan<- *MirrorStats) {
-	for mirror := range jobs {
-		fmt.Println("worker", mirror, "processing job", mirror)
-		r := executePing(mirror, s)
+func worker(s *NetSelector, jobs <-chan *Host, results chan<- *HostStats) {
+	for host := range jobs {
+		r := executePing(host, s)
 		results <- r
 	}
 }

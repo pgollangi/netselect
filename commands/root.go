@@ -45,8 +45,13 @@ func runCommand(cmd *cobra.Command, args []string) error {
 	output, _ := cmd.Flags().GetInt("output")
 	threads, _ := cmd.Flags().GetInt("threads")
 
-	var mirrors = args
-	selector, err := netselect.NewNetSelector(mirrors[:])
+	hosts := make([]*netselect.Host, len(args))
+
+	for i, h := range args {
+		hosts[i], _ = netselect.NewHost(h, h)
+	}
+
+	selector, err := netselect.NewNetSelector(hosts[:])
 	if err != nil {
 		fmt.Println("Error ", err)
 		return err
@@ -63,7 +68,7 @@ func runCommand(cmd *cobra.Command, args []string) error {
 	defer w.Flush()
 
 	for i := 0; i < output; i++ {
-		if i >= len(mirrors) {
+		if i >= len(hosts) {
 			break
 		}
 		r := result[i]
@@ -77,7 +82,7 @@ func runCommand(cmd *cobra.Command, args []string) error {
 		}
 		successPackets = fmt.Sprintf("(%2d/%2d)", r.PacketsRecv, r.PacketsSent)
 
-		fmt.Fprintf(w, "%s \t %d ms\t%d%% ok\t%s\t\n", r.Mirror, avgRtt, successPercent, successPackets)
+		fmt.Fprintf(w, "%s \t %d ms\t%d%% ok\t%s\t\n", r.Host.Address, avgRtt, successPercent, successPackets)
 	}
 	return nil
 }
