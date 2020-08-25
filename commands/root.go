@@ -20,9 +20,9 @@ var Build string
 
 // RootCmd is the main root/parent command
 var RootCmd = &cobra.Command{
-	Use:           "netselect [flags] <mirror(s)>",
+	Use:           "netselect [flags] <host(s)>",
 	Short:         "A netselect CLI Tool",
-	Long:          `netselect is an open source CLI tool to select the fastest mirror based on the lowest ICMP latency.`,
+	Long:          `netselect is an open source CLI tool to select the fastest host based on the lowest ICMP latency.`,
 	SilenceErrors: true,
 	SilenceUsage:  true,
 	Example: heredoc.Doc(`

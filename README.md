@@ -8,12 +8,12 @@ This tool is under development. Not yet ready for production use.
 
 # netselect
 
-A CLI tool as well as library to select the fastest mirror based on the lowest ICMP latency written in Go (golang), inspired by [apenwarr/netselect](https://github.com/apenwarr/netselect) debian package.
+A CLI tool as well as library to select the fastest host based on the lowest ICMP latency written in Go (golang), inspired by [apenwarr/netselect](https://github.com/apenwarr/netselect) debian package.
 
 ## Usage
 
 ```sh
-netselect [options] <mirror(s)>
+netselect [options] <host(s)>
 ```
 ### Examples
 ```sh
