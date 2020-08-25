@@ -46,7 +46,7 @@ func runCommand(cmd *cobra.Command, args []string) error {
 	threads, _ := cmd.Flags().GetInt("threads")
 
 	var mirrors = args
-	selector, err := netselect.NewSelector(mirrors[:])
+	selector, err := netselect.NewNetSelector(mirrors[:])
 	if err != nil {
 		fmt.Println("Error ", err)
 		return err

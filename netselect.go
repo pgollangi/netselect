@@ -10,7 +10,7 @@ import (
 	"github.com/pgollangi/go-ping"
 )
 
-type Selector struct {
+type NetSelector struct {
 	Mirrors    []string
 	Debug      bool
 	Attempts   int
@@ -61,8 +61,8 @@ func isWindows() bool {
 	return runtime.GOOS == "windows"
 }
 
-func NewSelector(mirrors []string) (*Selector, error) {
-	return &Selector{
+func NewNetSelector(mirrors []string) (*NetSelector, error) {
+	return &NetSelector{
 		Mirrors:    mirrors,
 		Attempts:   3,
 		Timeout:    time.Second * 30,
@@ -70,7 +70,7 @@ func NewSelector(mirrors []string) (*Selector, error) {
 	}, nil
 }
 
-func executePing(mirror string, s *Selector) *MirrorStats {
+func executePing(mirror string, s *NetSelector) *MirrorStats {
 	pinger, err := ping.NewPinger(mirror)
 	if err != nil {
 		return &MirrorStats{
@@ -122,7 +122,7 @@ func (r AllResults) Less(i, j int) bool { return r[i].AvgRtt < r[j].AvgRtt }
 func (r AllResults) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
 
 // Select tet
-func (s *Selector) Select() []*MirrorStats {
+func (s *NetSelector) Select() []*MirrorStats {
 
 	mirrors := s.Mirrors
 	mLen := len(mirrors)
@@ -163,7 +163,7 @@ func (s *Selector) Select() []*MirrorStats {
 	return pingResults
 }
 
-func worker(s *Selector, jobs <-chan string, results chan<- *MirrorStats) {
+func worker(s *NetSelector, jobs <-chan string, results chan<- *MirrorStats) {
 	for mirror := range jobs {
 		fmt.Println("worker", mirror, "processing job", mirror)
 		r := executePing(mirror, s)

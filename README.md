@@ -73,6 +73,7 @@ Please read the [Contributions](.github/CONTRIBUTING.md) and [Code of conduct](.
 Feel free to open an issue or submit a pull request!
 
 ## License
-Copyright © [Prasanna Kumar](https://pgollangi.com)
 
-`netselect` is open-sourced software licensed under the [MIT](LICENSE) license.
+[MIT](LICENSE)
+
+Copyright © [Prasanna Kumar](https://pgollangi.com)
