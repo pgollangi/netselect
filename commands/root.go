@@ -59,7 +59,10 @@ func runCommand(cmd *cobra.Command, args []string) error {
 	selector.Debug = debug
 	selector.Threads = threads
 
-	result := selector.Select()
+	result, err := selector.Select()
+	if err != nil {
+		return err
+	}
 
 	// initialize tabwriter
 	w := new(tabwriter.Writer)

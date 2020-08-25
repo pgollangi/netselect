@@ -3,6 +3,7 @@ package netselect
 import (
 	"fmt"
 	"net"
+	"net/url"
 	"runtime"
 	"sort"
 	"time"
@@ -71,13 +72,33 @@ func isWindows() bool {
 	return runtime.GOOS == "windows"
 }
 
+func validateHost(host *Host) error {
+	_, err := url.ParseRequestURI(host.Address)
+	if err == nil {
+		// Its a URL
+		u, err := url.Parse(host.Address)
+		if err != nil {
+			return err
+		}
+		if u.Scheme == "" || u.Host == "" {
+			return fmt.Errorf("invalid host address %s", host.Address)
+		}
+		fmt.Println(u.Host)
+		host.Address = u.Host
+	}
+
+	return nil
+}
+
 // NewHost creates and returns new Host instance
-func NewHost(id string, address string) (*Host, error) {
+func NewHost(id string, address string) (host *Host, err error) {
 	// TODO validate address
-	return &Host{
+	host = &Host{
 		ID:      id,
 		Address: address,
-	}, nil
+	}
+	err = validateHost(host)
+	return host, err
 }
 
 // NewNetSelector instantiate new instance of NetSelector
@@ -141,10 +162,22 @@ func (r allResults) Len() int           { return len(r) }
 func (r allResults) Less(i, j int) bool { return r[i].AvgRtt < r[j].AvgRtt }
 func (r allResults) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
 
-// Select tet
-func (s *NetSelector) Select() []*HostStats {
+// Select finds the faster hosts among the provided inputs, and sort the resulted host in ASC order
+func (s *NetSelector) Select() ([]*HostStats, error) {
+	return s.performSelection()
+}
+
+func (s *NetSelector) performSelection() ([]*HostStats, error) {
 
 	hosts := s.Hosts
+
+	for _, host := range hosts {
+		err := validateHost(host)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	mLen := len(hosts)
 
 	jobs := make(chan *Host, mLen)
@@ -180,7 +213,7 @@ func (s *NetSelector) Select() []*HostStats {
 
 	sort.Sort(allResults(success))
 	pingResults = append(success, failed...)
-	return pingResults
+	return pingResults, nil
 }
 
 func worker(s *NetSelector, jobs <-chan *Host, results chan<- *HostStats) {
