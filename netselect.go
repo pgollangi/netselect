@@ -10,6 +10,7 @@ import (
 	"github.com/pgollangi/go-ping"
 )
 
+// NetSelector represents the instance of a NetSelector
 type NetSelector struct {
 	Mirrors    []string
 	Debug      bool
@@ -19,6 +20,7 @@ type NetSelector struct {
 	Threads    int
 }
 
+// MirrorStats represents the results of one particular mirror
 type MirrorStats struct {
 	Mirror string
 
@@ -61,6 +63,7 @@ func isWindows() bool {
 	return runtime.GOOS == "windows"
 }
 
+// NewNetSelector instantiate new instance of NetSelector
 func NewNetSelector(mirrors []string) (*NetSelector, error) {
 	return &NetSelector{
 		Mirrors:    mirrors,
@@ -115,11 +118,11 @@ func executePing(mirror string, s *NetSelector) *MirrorStats {
 	}
 }
 
-type AllResults []*MirrorStats
+type allResults []*MirrorStats
 
-func (r AllResults) Len() int           { return len(r) }
-func (r AllResults) Less(i, j int) bool { return r[i].AvgRtt < r[j].AvgRtt }
-func (r AllResults) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
+func (r allResults) Len() int           { return len(r) }
+func (r allResults) Less(i, j int) bool { return r[i].AvgRtt < r[j].AvgRtt }
+func (r allResults) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
 
 // Select tet
 func (s *NetSelector) Select() []*MirrorStats {
@@ -158,7 +161,7 @@ func (s *NetSelector) Select() []*MirrorStats {
 		pingResults = append(pingResults, result)
 	}
 
-	sort.Sort(AllResults(success))
+	sort.Sort(allResults(success))
 	pingResults = append(success, failed...)
 	return pingResults
 }
