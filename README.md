@@ -3,6 +3,7 @@
 This tool is under development. Not yet ready for production use.
 
 ![build](https://github.com/pgollangi/netselect/workflows/build/badge.svg?branch=master)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/pgollangi/netselect)](https://pkg.go.dev/github.com/pgollangi/netselect)
 [![Go Report Card](https://goreportcard.com/badge/github.com/pgollangi/netselect)](https://goreportcard.com/report/github.com/pgollangi/netselect)
 ![License: MIT](https://img.shields.io/github/license/pgollangi/netselect)
 
