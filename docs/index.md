@@ -4,10 +4,10 @@ A netselect CLI Tool
 
 ### Synopsis
 
-netselect is an open source CLI tool to select the fastest mirror based on the lowest ICMP latency.
+netselect is an open source CLI tool to select the fastest host based on the lowest ICMP latency.
 
 ```
-netselect [flags] <mirror(s)>
+netselect [flags] <host(s)>
 ```
 
 ### Examples
