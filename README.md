@@ -30,16 +30,14 @@ m1.example.com      294 ms         100% ok         ( 3/ 3)
 
 Read the  [documentation](https://pgollangi.com/netselect)  for more information on the CLI tool.
 
-<!---
 ## Installation 
 
-Download a binary suitable for your OS at the [releases page](https://github.com/pgollangi/netselect/releases/latest).
-
-### NPM
 ```sh
-npm install netselect
+go get github.com/pgollangi/netselect/cmd/netselect
+$GOPATH/bin/ping
 ```
---->
+
+Alternately you can download a binary suitable for your OS at the [releases page](https://github.com/pgollangi/netselect/releases/latest).
 
 ## Building from source
 
@@ -54,17 +52,13 @@ To download and install  `Go`, please refer to the  [Go documentation](https://g
 $ git clone https://gitlab.com/pgollangi/netselect.git
 $ cd netselect
 ```
-### Build project
-On Unix based systems run:
+### Build
+
 ```sh
-build/build.sh
+$ go build cmd/netselect/netselect.go
+$ netselect
+
 ```
-On Windows run:
-```console
-build/build.bat
-```
-Once completed, you will find the netselect CLI executable at `bin` directory. 
-Run `bin/netselect -v` to check if it worked.
 
 ## Contributions
 Thanks for considering contributing to this project!
