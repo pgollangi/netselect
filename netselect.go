@@ -72,7 +72,7 @@ func isWindows() bool {
 	return runtime.GOOS == "windows"
 }
 
-func validateHost(host *Host) error {
+func sanitizeHost(host *Host) error {
 	_, err := url.ParseRequestURI(host.Address)
 	if err == nil {
 		// Its a URL
@@ -96,7 +96,7 @@ func NewHost(id string, address string) (host *Host, err error) {
 		ID:      id,
 		Address: address,
 	}
-	err = validateHost(host)
+	err = sanitizeHost(host)
 	return host, err
 }
 
@@ -171,7 +171,7 @@ func (s *NetSelector) performSelection() ([]*HostStats, error) {
 	hosts := s.Hosts
 
 	for _, host := range hosts {
-		err := validateHost(host)
+		err := sanitizeHost(host)
 		if err != nil {
 			return nil, err
 		}
