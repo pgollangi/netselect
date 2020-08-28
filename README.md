@@ -33,7 +33,7 @@ $ netselect
 ### Manual
 
 1. Download and install binary from the [latest release](https://github.com/pgollangi/netselect/releases/latest).
-2. Recommended: add 1build executable to your $PATH.
+2. Recommended: add `netselect` executable to your $PATH.
 
 ## Building from source
 
