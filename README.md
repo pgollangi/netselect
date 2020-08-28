@@ -14,10 +14,10 @@ netselect [options] <host(s)>
 ```
 ### Examples
 ```sh
-$ netselect m1.example.com m2.example.com m3.example.com
-m2.example.com       56 ms         100% ok         ( 3/ 3)
-m3.example.com      136 ms         100% ok         ( 3/ 3)
-m1.example.com      294 ms         100% ok         ( 3/ 3)
+$ netselect google.com google.in google.us
+google.com       55 ms  100% ok         ( 3/ 3)
+google.in        56 ms  100% ok         ( 3/ 3)
+google.us        59 ms  100% ok         ( 3/ 3)
 ```
 ### Learn More
 
