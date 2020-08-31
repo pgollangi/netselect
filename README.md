@@ -9,7 +9,7 @@ A CLI tool as well as library to select the fastest host based on the lowest ICM
 
 ## Usage
 
-### CLI
+### Commnad-Line
 
 ```sh
 netselect [options] <host(s)>
@@ -21,9 +21,8 @@ google.com       55 ms  100% ok         ( 3/ 3)
 google.in        56 ms  100% ok         ( 3/ 3)
 google.us        59 ms  100% ok         ( 3/ 3)
 ```
-#### Learn More
 
-Read the  [documentation](https://pgollangi.com/netselect)  for more information on the CLI tool.
+Read the  [documentation](https://pgollangi.com/netselect)  for more information on the CLI usage.
 
 ### Go Library
 
@@ -42,7 +41,7 @@ if err != nil {
 
 fastestHosts := netSelector.Hosts // Fastest hosts in ASC order
 ```
-Read the  [API documentation](https://pkg.go.dev/github.com/pgollangi/netselect)  for more information on the library usage.
+Read the  [API documentation](https://pkg.go.dev/github.com/pgollangi/netselect) for more information on the library usage.
 
 ## Installation 
 
