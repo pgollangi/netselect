@@ -7,23 +7,25 @@
 
 A CLI tool as well as library to select the fastest host based on the lowest ICMP latency written in Go (golang), inspired by [apenwarr/netselect](https://github.com/apenwarr/netselect) debian package.
 
-## Usage (CLI)
+## Usage
+
+### CLI
 
 ```sh
 netselect [options] <host(s)>
 ```
-### Examples
+#### Examples
 ```sh
 $ netselect google.com google.in google.us
 google.com       55 ms  100% ok         ( 3/ 3)
 google.in        56 ms  100% ok         ( 3/ 3)
 google.us        59 ms  100% ok         ( 3/ 3)
 ```
-### Learn More
+#### Learn More
 
 Read the  [documentation](https://pgollangi.com/netselect)  for more information on the CLI tool.
 
-## Usage (Go Library)
+### Go Library
 
 Here is a simple example that finds fastest hosts:
 
@@ -40,7 +42,7 @@ if err != nil {
 
 fastestHosts := netSelector.Hosts // Fastest hosts in ASC order
 ```
-
+Read the  [API documentation](https://pkg.go.dev/github.com/pgollangi/netselect)  for more information on the library usage.
 
 ## Installation 
 
