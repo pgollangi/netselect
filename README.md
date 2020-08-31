@@ -77,7 +77,22 @@ $ netselect
 
 ```
 
-## Contributions
+## Notice for linux users
+`netelect` implements ICMP ping using both raw socket and UDP. It needs to be run as a root user.
+
+Alternatley, you can use `setcap` to allow `netselect` to bind to raw sockets
+```sh
+setcap cap_net_raw=+ep /bin/netselect
+```
+If you do not wish to do all this, you can use flag `--privileged=false` to send an "unprivileged" ping via UDP. This must be enabled by setting
+
+```sh
+sudo sysctl -w net.ipv4.ping_group_range="0   2147483647"
+```
+
+See [this blog](https://sturmflut.github.io/linux/ubuntu/2015/01/17/unprivileged-icmp-sockets-on-linux/) and the Go [icmp library](https://pkg.go.dev/golang.org/x/net/icmp?tab=doc) for more details.
+
+## Contributing
 Thanks for considering contributing to this project!
 
 Please read the [Contributions](.github/CONTRIBUTING.md) and [Code of conduct](.github/CODE_OF_CONDUCT.md). 
