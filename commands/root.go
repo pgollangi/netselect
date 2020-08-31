@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/MakeNowJust/heredoc"
 	"github.com/spf13/cobra"
@@ -10,6 +11,8 @@ import (
 	"text/tabwriter"
 
 	"github.com/pgollangi/netselect"
+
+	"github.com/briandowns/spinner"
 )
 
 // Version is the version for netselect
@@ -63,10 +66,16 @@ func runCommand(cmd *cobra.Command, args []string) error {
 	selector.Attempts = attempts
 	selector.Privileged = privileged
 
+	loading := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
+	loading.Prefix = "Selecting..."
+	loading.FinalMSG = "Done!"
+	loading.Start()
 	result, err := selector.Select()
 	if err != nil {
 		return err
 	}
+	loading.Stop()
+	fmt.Println()
 
 	// initialize tabwriter
 	w := new(tabwriter.Writer)
