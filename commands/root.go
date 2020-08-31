@@ -43,7 +43,9 @@ func runCommand(cmd *cobra.Command, args []string) error {
 
 	debug, _ := cmd.Flags().GetBool("debug")
 	output, _ := cmd.Flags().GetInt("output")
-	threads, _ := cmd.Flags().GetInt("threads")
+	concurrent, _ := cmd.Flags().GetInt("concurrent")
+	attempts, _ := cmd.Flags().GetInt("attempts")
+	privileged, _ := cmd.Flags().GetBool("privileged")
 
 	hosts := make([]*netselect.Host, len(args))
 
@@ -57,7 +59,9 @@ func runCommand(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	selector.Debug = debug
-	selector.Threads = threads
+	selector.Threads = concurrent
+	selector.Attempts = attempts
+	selector.Privileged = privileged
 
 	result, err := selector.Select()
 	if err != nil {
@@ -98,11 +102,14 @@ func Execute() error {
 func init() {
 	RootCmd.Flags().BoolP("version", "v", false, "show netselect version information")
 	RootCmd.Flags().BoolP("debug", "d", false, "show debug information")
-	RootCmd.Flags().IntP("threads", "t", 1, "use <n> parellel threads")
-	RootCmd.Flags().IntP("output", "o", 3, "output top ranked <n> results")
+	RootCmd.Flags().IntP("concurrent", "c", 1, "use <n> concurrent threads. Default to 3.")
+	RootCmd.Flags().IntP("output", "o", 3, "output top ranked <n> results. Default to 3.")
+	RootCmd.Flags().IntP("attempts", "a", 3, "no.of ping attempts to perform for each host. Default to 3.")
+	RootCmd.Flags().BoolP("privileged", "p", true, `use to send "privileged" raw ICMP ping. Default to TRUE.`)
+
 }
 
 func executeVersionCmd() {
 	fmt.Printf("netselect version %s (%s)\n", Version, Build)
-	fmt.Println("More info: pgollangi.com/netselect")
+	fmt.Println("For more info: pgollangi.com/netselect")
 }
