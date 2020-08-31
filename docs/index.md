@@ -21,12 +21,12 @@ $ netselect -v
 ### Options
 
 ```
-  -a, --attempts int     no.of ping attempts to perform for each host. Default to 3. (default 3)
-  -c, --concurrent int   use <n> concurrent threads. Default to 3. (default 1)
+  -a, --attempts int     no.of ping attempts to perform for each host. (default 3)
+  -c, --concurrent int   use <n> concurrent threads. (default 1)
   -d, --debug            show debug information
   -h, --help             help for netselect
-  -o, --output int       output top ranked <n> results. Default to 3. (default 3)
-  -p, --privileged       use to send "privileged" raw ICMP ping. Default to TRUE. (default true)
+  -o, --output int       output top ranked <n> results. (default 3)
+  -p, --privileged       use to send "privileged" raw ICMP ping. (default true)
   -v, --version          show netselect version information
 ```
 
