@@ -40,7 +40,6 @@ archives:
     format_overrides:
       - goos: windows
         format: zip
-    format: binary
   - id: nix
     builds: [macos, linux]
     <<: &archive_defaults
