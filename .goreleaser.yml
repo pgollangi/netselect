@@ -16,13 +16,89 @@ builds:
       - linux
       - windows
       - darwin
+  - <<: &build_defaults
+      binary: bin/netselect
+      main: ./cmd/netselect
+    id: macos
+    goos: [darwin]
+    goarch: [amd64]
+
+  - <<: *build_defaults
+    id: linux
+    goos: [linux]
+    goarch: [386, amd64]
+
+  - <<: *build_defaults
+    id: windows
+    goos: [windows]
+    goarch: [386, amd64]
 archives:
   - replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
+      darwin: macOS
       386: i386
       amd64: x86_64
+    format_overrides:
+      - goos: windows
+        format: zip
+    format: binary
+  - id: nix
+    builds: [macos, linux]
+    <<: &archive_defaults
+      name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    wrap_in_directory: false
+    replacements:
+      darwin: macOS
+      linux: linux
+    format: tar.gz
+scoop:
+  url_template: "http://github.com/pgollangi/netselect/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+  bucket:
+    owner: pgollangi
+    name: scoop-bucket
+  commit_author:
+    name: Prasanna Kumar Gollangi
+    email: prassu158@gmail.com
+  commit_msg_template: "Scoop update for {{ .ProjectName }} version {{ .Tag }}"
+  homepage: "https://github.com/pgollangi/netselect"
+  description: "A open source cli tool to find fastest host based on the lowest ICMP latency."
+  license: MIT
+
+brews:
+  - name: netselect
+    ids:
+      - nix
+    description: "A open source cli tool to find fastest host based on the lowest ICMP latency."
+    commit_author:
+      name: Prasanna Kumar Gollangi
+      email: prassu158@gmail.com
+    folder: Formula
+    goarm: 6
+    tap:
+      owner: pgollangi
+      name: homebrew-tap
+    url_template: "http://github.com/pgollangi/netselect/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    # Packages your package depends on.
+    homepage: "https://github.com/pgollangi/netselect"
+    install: bin.install "bin/netselect"
+    test: |
+      system "#{bin}/netselect version" 
+
+nfpms:
+  -
+    id: foo
+    package_name: netselect
+    replacements:
+      amd64: x86_64
+      386: i386
+      darwin: macOS
+    vendor: Prasana Kumar Gollangi
+    homepage: https://github.com/pgollangi/netselect
+    maintainer: Prasanna Kumar Gollangi <prassu158@gmail.com>
+    description: A open source cli tool to find fastest host based on the lowest ICMP latency.
+    license: MIT
+    formats:
+      - deb
+      - rpm
 checksum:
   name_template: 'checksums.txt'
 snapshot:
