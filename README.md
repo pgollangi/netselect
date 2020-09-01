@@ -45,13 +45,26 @@ Read the  [API documentation](https://pkg.go.dev/github.com/pgollangi/netselect)
 
 ## Installation 
 
+### Scoop
+```sh
+scoop bucket add pgollangi-bucket https://github.com/pgollangi/scoop-bucket.git
+scoop install netselect
+```
+### Homebrew
+```sh
+brew install pgollangi/tap/netselect
+```
+Updating:
+```
+brew upgrade netselect
+```
+### Go
 ```sh
 $ go get github.com/pgollangi/netselect/cmd/netselect
 $ netselect
 ```
 
 ### Manual
-
 1. Download and install binary from the [latest release](https://github.com/pgollangi/netselect/releases/latest).
 2. Recommended: add `netselect` executable to your $PATH.
 
