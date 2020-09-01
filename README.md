@@ -2,6 +2,7 @@
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/pgollangi/netselect)](https://pkg.go.dev/github.com/pgollangi/netselect)
 [![Go Report Card](https://goreportcard.com/badge/github.com/pgollangi/netselect)](https://goreportcard.com/report/github.com/pgollangi/netselect)
 ![License: MIT](https://img.shields.io/github/license/pgollangi/netselect)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpgollangi%2Fnetselect.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpgollangi%2Fnetselect?ref=badge_shield)
 
 # netselect
 
@@ -103,3 +104,6 @@ Feel free to open an issue or submit a pull request!
 [MIT](LICENSE)
 
 Copyright © [Prasanna Kumar](https://pgollangi.com)
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpgollangi%2Fnetselect.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpgollangi%2Fnetselect?ref=badge_large)
