@@ -8,7 +8,7 @@
 A CLI tool as well as library to select the fastest host based on the lowest ICMP latency written in Go (golang), inspired by [apenwarr/netselect](https://github.com/apenwarr/netselect) debian package.
 
 ## Usage
-
+`netselect` available as Commnad-Line tool and Go library.
 ### Commnad-Line
 
 ```sh
