@@ -1,8 +1,8 @@
 ![build](https://github.com/pgollangi/netselect/workflows/build/badge.svg?branch=master)
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/pgollangi/netselect)](https://pkg.go.dev/github.com/pgollangi/netselect)
 [![Go Report Card](https://goreportcard.com/badge/github.com/pgollangi/netselect)](https://goreportcard.com/report/github.com/pgollangi/netselect)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/pgollangi/netselect)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/pgollangi/netselect)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/pgollangi/netselect)](https://pkg.go.dev/github.com/pgollangi/netselect)
 ![License: MIT](https://img.shields.io/github/license/pgollangi/netselect)
 
 # netselect
