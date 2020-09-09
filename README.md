@@ -22,7 +22,7 @@ google.in        56 ms  100% ok         ( 3/ 3)
 google.us        59 ms  100% ok         ( 3/ 3)
 ```
 
-Read the  [documentation](https://pgollangi.com/netselect)  for more information on the CLI usage.
+Read the  [documentation](https://dev.pgollangi.com/netselect)  for more information on the CLI usage.
 
 ### Go Library
 
@@ -39,7 +39,9 @@ if err != nil {
     panic(err)
 }
 
-fastestHosts := netSelector.Hosts // Fastest hosts in ASC order
+results, err := netSelector.Select()
+
+fastestHosts := results // Fastest hosts in ASC order
 ```
 Read the  [API documentation](https://pkg.go.dev/github.com/pgollangi/netselect) for more information on the library usage.
 
