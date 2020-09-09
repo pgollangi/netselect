@@ -105,12 +105,13 @@ func NewNetSelector(hosts []*Host) (*NetSelector, error) {
 	return &NetSelector{
 		Hosts:      hosts,
 		Attempts:   3,
+		Threads:    1,
 		Timeout:    time.Second * 30,
 		Privileged: isWindows(),
 	}, nil
 }
 
-func executePing(host *Host, s *NetSelector) *HostStats {
+func (s *NetSelector) executePing(host *Host) *HostStats {
 	pinger, err := ping.NewPinger(host.Address)
 	if err != nil {
 		return &HostStats{
@@ -184,10 +185,16 @@ func (s *NetSelector) performSelection() ([]*HostStats, error) {
 
 	pingResults := []*HostStats{}
 
-	for t := 0; t < s.Threads; t++ {
+	threads := s.Threads
+
+	if threads < 1 {
+		threads = 1
+	}
+
+	for t := 0; t < threads; t++ {
 		go func() {
 			for host := range jobs {
-				r := executePing(host, s)
+				r := s.executePing(host)
 				results <- r
 			}
 		}()
@@ -213,11 +220,4 @@ func (s *NetSelector) performSelection() ([]*HostStats, error) {
 	sort.Sort(allResults(success))
 	pingResults = append(success, failed...)
 	return pingResults, nil
-}
-
-func worker(s *NetSelector, jobs <-chan *Host, results chan<- *HostStats) {
-	for host := range jobs {
-		r := executePing(host, s)
-		results <- r
-	}
 }
