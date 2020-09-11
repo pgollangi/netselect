@@ -11,6 +11,13 @@ A CLI tool as well as library to select the fastest host based on the lowest ICM
 
 It’s a handy tool to choose a mirror for apt, or just to compare sites to each other. Under the hood it’s an ICMP ping.
 
+## Features
+- Finds the fastest host(s) in terms of network connectivity.
+- Run desired concurent findings to get faster results. Use flag `--concurrent`.  
+- Customize no. of ping attempt to perform for each host to get accurate mean response time. Use flag `--attempts`.
+- Display only top `n` results on output. Use flag `--output`.
+- Optionally, direct `netselect` to send "unprivileged" pings via UDP for non-sudo users. Use `--privileged=false`.
+
 ## Usage
 `netselect` available as Commnad-Line tool and Go library.
 ### Commnad-Line
