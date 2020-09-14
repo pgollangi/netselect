@@ -3,6 +3,8 @@
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/pgollangi/netselect)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/pgollangi/netselect)
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/pgollangi/netselect)](https://pkg.go.dev/github.com/pgollangi/netselect)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6236d95b7ca7a9554560/maintainability)](https://codeclimate.com/github/pgollangi/netselect/maintainability)
+[![Code Climate technical debt](https://img.shields.io/codeclimate/tech-debt/pgollangi/netselect)](https://codeclimate.com/github/pgollangi/netselect/trends/technical_debt)
 ![License: MIT](https://img.shields.io/github/license/pgollangi/netselect)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/prassu158@gmail.com)
 # netselect
