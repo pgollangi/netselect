@@ -6,5 +6,5 @@ require (
 	github.com/MakeNowJust/heredoc v1.0.0
 	github.com/briandowns/spinner v1.11.1
 	github.com/pgollangi/go-ping v1.0.0
-	github.com/spf13/cobra v1.1.1
+	github.com/spf13/cobra v1.3.0
 )
