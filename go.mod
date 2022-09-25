@@ -1,6 +1,6 @@
 module github.com/pgollangi/netselect
 
-go 1.14
+go 1.19
 
 require (
 	github.com/MakeNowJust/heredoc v1.0.0
