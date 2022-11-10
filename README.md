@@ -130,4 +130,4 @@ Feel free to open an issue or submit a pull request!
 
 [MIT](LICENSE)
 
-Copyright © [Prasanna Kumar](https://p11r.dev)
+Copyright © [Prasanna Kumar](https://pgollangi.github.io/tabs/about)
