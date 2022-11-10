@@ -35,7 +35,7 @@ google.in        56 ms  100% ok         ( 3/ 3)
 google.us        59 ms  100% ok         ( 3/ 3)
 ```
 
-Read the  [documentation](https://dev.pgollangi.com/netselect)  for more information on the CLI usage.
+Read the  [documentation](https://pgollangi.github.io/netselect)  for more information on the CLI usage.
 
 ### Go Library
 
